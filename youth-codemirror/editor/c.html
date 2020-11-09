@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>c-editor</title>
+  <script src="../lib/codemirror.js"></script>
+  <script src="../mode/clike/clike.js"></script>
+  <!--<script src="../mode/javascript/javascript.js"></script>-->
+  <script src="../addon/selection/active-line.js"></script>
+  <script src="../addon/edit/matchbrackets.js"></script>
+  <link rel="stylesheet" href="../lib/codemirror.css">
+  <link rel="stylesheet" href="../theme/abcdef.css">
+  <style>
+    * {
+      margin:0;
+      padding:0;
+    }
+    html,body{
+      height:100%;
+    }
+    .root {
+      height:100%;
+      background-color:#eee;
+      display: flex;
+      flex-direction: column;
+    }
+    .themes {
+      text-align: right;
+      padding: 1px 5px 1px 0;
+      font-size: 12px;
+    }
+    .code-container {
+      flex-grow: 1;
+      overflow: auto;
+    }
+    .code {
+    }
+    .CodeMirror {
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+<div class="root">
+  <p class="themes">选择样式: <select onchange="selectTheme()" id=select>
+    <option value="default" selected>默认</option>
+    <option value="abcdef">黑色</option>
+  </select>
+  </p>
+  <div class="code-container">
+    <textarea id="code" name="code" class="code">
+    </textarea>
+  </div>
+</div>
+
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true,
+    height: '100%'
+  });
+  var input = document.getElementById("select");
+  function selectTheme() {
+    // console.log('---2',input.options[input.selectedIndex].value)
+    var theme = input.options[input.selectedIndex].value;
+    // var theme = input.options[input.selectedIndex].textContent;
+    editor.setOption("theme", theme);
+    location.hash = "#" + theme;
+  }
+  var choice = (location.hash && location.hash.slice(1)) ||
+    (document.location.search &&
+      decodeURIComponent(document.location.search.slice(1)));
+  if (choice) {
+    input.value = choice;
+    editor.setOption("theme", choice);
+  }
+  console.log('---editor:', editor.getValue());
+  editor.setValue(`
+      function findSequence(goal) {
+        function find(start, history) {
+          if (start == goal)
+            return history;
+          else if (start > goal)
+            return null;
+          else
+            return find(start + 5, "(" + history + " + 5)") ||
+                   find(start * 3, "(" + history + " * 3)");
+        }
+        return find(1, "1");
+      }`)
+  CodeMirror.on(window, "hashchange", function() {
+    var theme = location.hash.slice(1);
+    if (theme) { input.value = theme; selectTheme(); }
+  });
+</script>
+</body>
+</html>

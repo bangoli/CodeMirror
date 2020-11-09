@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>c-editor</title>
+  <script src="../lib/codemirror.js"></script>
+<!--  <script src="../mode/javascript/javascript.js"></script>-->
+  <script src="../addon/selection/active-line.js"></script>
+  <script src="../addon/edit/matchbrackets.js"></script>
+  <link rel="stylesheet" href="../lib/codemirror.css">
+  <link rel="stylesheet" href="../theme/abcdef.css">
+  <style>
+    * {
+      margin:0;
+      padding:0;
+    }
+    html,body{
+      height:100%;
+    }
+    .root {
+      height:100%;
+      background-color:#eee;
+      display: flex;
+      flex-direction: column;
+    }
+    .themes {
+      text-align: right;
+      padding: 1px 5px 1px 0;
+      font-size: 12px;
+    }
+    .code-container {
+      flex-grow: 1;
+      overflow: auto;
+    }
+    .code {
+    }
+    .CodeMirror {
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+<div class="root">
+  <p class="themes">选择样式: <select onchange="selectTheme()" id=select>
+    <option value="default" selected>默认</option>
+    <option value="abcdef">黑色</option>
+  </select>
+  </p>
+  <div class="code-container">
+    <textarea id="code" name="code" class="code">
+    </textarea>
+  </div>
+</div>
+
+<script src="js/editor.js"></script>
+</body>
+</html>
