@@ -188,6 +188,8 @@ function findSequence(goal) {
     input.value = choice;
     editor.setOption("theme", choice);
   }
+  console.log('---editor:', editor.getValue());
+  debugger;
   CodeMirror.on(window, "hashchange", function() {
     var theme = location.hash.slice(1);
     if (theme) { input.value = theme; selectTheme(); }
